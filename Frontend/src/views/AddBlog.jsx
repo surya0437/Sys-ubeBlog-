@@ -21,9 +21,21 @@ const AddBlogForm = () => {
     });
   };
 
-
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+    const maxFileSize = 2 * 1024 * 1024; // 2MB
+
+    if (selectedFile && allowedTypes.includes(selectedFile.type) && selectedFile.size <= maxFileSize) {
+      setFile(selectedFile);
+      setErrors({ ...errors, blogImage: null });
+    } else {
+      setFile(null);
+      setErrors({
+        ...errors,
+        blogImage: 'Please select a valid image file (jpeg, png, jpg, gif) up to 2MB.',
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -33,35 +45,29 @@ const AddBlogForm = () => {
     if (!formData.title) newErrors.title = 'Title is required';
     if (!formData.slug) newErrors.slug = 'Slug is required';
     if (!formData.description) newErrors.description = 'Description is required';
-    if (!formData.blogImage) {
-      newErrors.blogImage = 'Cover photo is required';
-    } else {
-      if (!['image/png', 'image/jpeg', 'image/gif'].includes(formData.blogImage.type)) {
-        newErrors.blogImage = 'Invalid file type. Only PNG, JPG, and GIF are allowed';
-      }
-      if (formData.blogImage.size > 10 * 1024 * 1024) {
-        newErrors.blogImage = 'File size should be less than 10MB';
-      }
-    }
+    if (!file) newErrors.blogImage = 'Cover photo is required';
+
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Form is valid, proceed with form submission
-      console.log('Form data:', formData);
       const formDataToSubmit = new FormData();
       formDataToSubmit.append('title', formData.title);
       formDataToSubmit.append('slug', formData.slug);
       formDataToSubmit.append('description', formData.description);
-
       formDataToSubmit.append('status', formData.status);
-      if (file) {
-        formDataToSubmit.append('blogImage', file);
-      }
-      console.log(formDataToSubmit);
+      formDataToSubmit.append('blogImage', file);
+
       try {
         const response = await axios.post('http://127.0.0.1:8000/api/addBlog', formDataToSubmit);
         console.log(response.data);
         alert('Blog added successfully!');
+        setFormData({
+          title: '',
+          slug: '',
+          description: '',
+          status: true,
+        });
+        setFile(null);
       } catch (error) {
         console.error(error);
         alert('Failed to add blog!');
@@ -147,7 +153,7 @@ const AddBlogForm = () => {
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+                    <p className="text-xs leading-5 text-gray-600 uppercase">jpeg, png, jpg, gif up to 2MB</p>
                     {errors.blogImage && <p className="text-red-600 text-sm mt-1">{errors.blogImage}</p>}
                   </div>
                 </div>

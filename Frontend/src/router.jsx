@@ -25,8 +25,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/ReadBlog/:id',
-        element: <Auth><ReadBlog /></Auth>
-
+        element: <ReadBlog />
     },
     {
         path: '/',

@@ -23,7 +23,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            return response()->json(['message' => $validator->errors()], 400);
         }
 
         $user = User::create([
@@ -54,6 +54,7 @@ class UserController extends Controller
         // Check for too many login attempts
         $attempts = Cache::get('login_attempts_' . $email, 0);
         if ($attempts >= 2) {
+            
             return response()->json(['message' => 'Too many login attempts. Please try again later.'], 429);
         }
 
@@ -61,7 +62,8 @@ class UserController extends Controller
             // Increment the login attempts
             Cache::put('login_attempts_' . $email, $attempts + 1, now()->addMinutes(30)); // Set a TTL of 30 minutes
 
-            return response()->json(['message' => 'Invalid email or password'], 401);
+            // return response()->json(['message' => 'Invalid email or password'], 401);
+            return response()->json(['message' => $attempts], 429);
         }
 
         // Reset login attempts on successful login

@@ -22,10 +22,10 @@ const RegisterForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.fname) newErrors.fname = 'First name is required';
     if (!formData.lname) newErrors.lname = 'Last name is required';
-    
+
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -43,13 +43,13 @@ const RegisterForm = () => {
     }
 
     setErrors(newErrors);
-    
+
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -59,8 +59,20 @@ const RegisterForm = () => {
       console.log(response.data);
       alert('Registration successful!');
     } catch (error) {
-      console.error(error);
-      alert('Registration failed!');
+      if (error.response && error.response.data) {
+        console.log(error.response.data);
+
+        let errorMessage = 'Registration failed!';
+
+        if (error.response.data.message) {
+          errorMessage = error.response.data.message.email;
+        }
+
+        alert(errorMessage);
+      } else {
+        console.error(error);
+        alert('Registration failed! Please try again later.');
+      }
     }
   };
 

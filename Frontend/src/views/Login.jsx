@@ -31,13 +31,13 @@ const LoginForm = () => {
     }
 
     setErrors(newErrors);
-    
+
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -45,13 +45,15 @@ const LoginForm = () => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/api/login', formData);
 
-      console.log(response.data);
       localStorage.setItem("accessToken", response.data.accessToken);
       alert('Login successful!');
       window.location.href = '/Dashboard';
     } catch (error) {
-      console.error(error);
-      alert('Login failed! Please check your email and password.');
+      console.log(error);
+      alert(error.response.data.message);
+      console.log(error.response.data.message);
+      // alert('Login failed! Please check your email and password.');
+
     }
   };
 
