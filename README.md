@@ -21,11 +21,10 @@
 
 #### Technology Stack
 - **Frontend**:
-  - HTML
-  - CSS (including any libraries or frameworks)
-  - JavaScript (ReactJS or VueJS)
+  - React
+  - Taildwin CSS
 - **Backend**:
-  - PHP (Laravel Framework)
+  - PHP/Laravel Framework
 - **Database**:
   - MySQL
 
