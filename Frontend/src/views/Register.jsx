@@ -58,6 +58,8 @@ const RegisterForm = () => {
       const response = await axios.post('http://127.0.0.1:8000/api/register', formData);
       console.log(response.data);
       alert('Registration successful!');
+      window.location.href = '/login';
+
     } catch (error) {
       if (error.response && error.response.data) {
         console.log(error.response.data);

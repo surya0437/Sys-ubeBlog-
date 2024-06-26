@@ -40,16 +40,16 @@
     open terminal and navigate to folder "Frontend"
     Run following command
         npm install
-        cp .env.example .env
         npm run dev
 
 ### Backend Setup
     open terminal and navigate to folder "Backend"
     Run following command
         composer install
-        cp .env.example .env
+        copy .env.example .env (You can change the database name after creating env file)
         php artisan key:generate
         php artisan migrate
+        php artisan jwt:secret
         npm install
         npm run dev
         php artisan serve
