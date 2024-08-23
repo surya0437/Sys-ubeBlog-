@@ -62,8 +62,8 @@ class UserController extends Controller
             // Increment the login attempts
             Cache::put('login_attempts_' . $email, $attempts + 1, now()->addMinutes(30)); // Set a TTL of 30 minutes
 
-            // return response()->json(['message' => 'Invalid email or password'], 401);
-            return response()->json(['message' => $attempts], 429);
+            return response()->json(['message' => 'Invalid email or password'], 401);
+            // return response()->json(['message' => $attempts], 429);
         }
 
         // Reset login attempts on successful login

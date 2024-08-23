@@ -50,9 +50,8 @@ const LoginForm = () => {
       window.location.href = '/Dashboard';
     } catch (error) {
       console.log(error);
-      alert(error.response.data.message);
-      console.log(error.response.data.message);
-      // alert('Login failed! Please check your email and password.');
+      // alert(error.response.data.message);
+      alert('Login failed! Please check your email and password.');
 
     }
   };
